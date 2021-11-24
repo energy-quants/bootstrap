@@ -1,0 +1,8 @@
+update_dependencies: false
+channel_priority: false
+channels:
+  - conda-forge
+envs_dirs:
+  - /opt/mambaforge/envs/
+pkgs_dirs:
+  - /opt/mambaforge/pkgs/
