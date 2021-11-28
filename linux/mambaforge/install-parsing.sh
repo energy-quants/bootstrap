@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Regenerate with "argbash --strip user-content -o install-parsing.sh install-parsing.sh"
-# ARG_OPTIONAL_SINGLE([version],[v],[The version of mambaforge to install.],[latest])
-# ARG_OPTIONAL_SINGLE([filepath],[f],[The full filepath to the mambaforge installer script],[])
+# ARG_OPTIONAL_SINGLE([version],[v],[The version of mambaforge to download and install.],[latest])
+# ARG_OPTIONAL_SINGLE([filepath],[f],[The full filepath to the mambaforge installer script.\nIf provided the specified installer is used and the version argument ignored.],[])
 # ARG_DEFAULTS_POS([])
 # ARG_HELP([Installs the specified version of mambaforge.])
 # ARGBASH_GO()
@@ -37,8 +37,9 @@ print_help()
 {
 	printf '%s\n' "Installs the specified version of mambaforge."
 	printf 'Usage: %s [-v|--version <arg>] [-f|--filepath <arg>] [-h|--help]\n' "$0"
-	printf '\t%s\n' "-v, --version: The version of mambaforge to install. (default: 'latest')"
-	printf '\t%s\n' "-f, --filepath: The full filepath to the mambaforge installer script (no default)"
+	printf '\t%s\n' "-v, --version: The version of mambaforge to download and install. (default: 'latest')"
+	printf '\t%s\n' "-f, --filepath: The full filepath to the mambaforge installer script.
+		If provided the specified installer is used and the version argument ignored. (no default)"
 	printf '\t%s\n' "-h, --help: Prints help"
 }
 
