@@ -11,7 +11,7 @@ set -x
 if test -z "${_arg_filepath}"; then
     # If --filepath was not specified then download the installer script
     tmpdir=$(mktemp -d "${TMPDIR:-/tmp/}$(basename "$0").XXXXXXXXXXXX")
-    filepath=$(./download.sh --version "${_arg_version}" --output-path "${tmpdir}")
+    filepath=$("${script_dir}/download.sh" --version "${_arg_version}" --output-path "${tmpdir}")
     function cleanup {
         rm -rf "${tmpdir}"
     }
@@ -37,7 +37,7 @@ rm -f "${prefix}/envs/base/.condarc"
 
 # copy .condarc to system location
 mkdir -v /etc/conda
-cp ./.condarc /etc/conda/.condarc
+cp "${script_dir}/.condarc" /etc/conda/.condarc
 
 # initialise bash
 "${prefix}/envs/base/bin/mamba" init -v --system bash
