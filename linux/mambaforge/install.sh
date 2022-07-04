@@ -4,6 +4,12 @@
 set -euo pipefail
 script_dir="$(cd "$(dirname "$(readlink -e "${BASH_SOURCE[0]}")")" && pwd)"
 . "${script_dir}/install-parsing.sh"
+
+sudo -n whoami > /dev/null 2>&1 || {
+    echo "You must be root to run this script!"
+    exit 1
+}
+
 set -x
 
 # download mambaforge if no installer file was specified
