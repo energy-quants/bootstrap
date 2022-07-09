@@ -2,7 +2,7 @@
 
 set -euo pipefail
 script_dir="$(cd "$(dirname "$(readlink -e "${BASH_SOURCE[0]}")")" && pwd)"
-. "${script_dir}/download-parsing.sh"
+. "${script_dir}/argparse/download.sh"
 set -x
 
 

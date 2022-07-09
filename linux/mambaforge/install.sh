@@ -3,10 +3,11 @@
 # parse command line arguments
 set -euo pipefail
 script_dir="$(cd "$(dirname "$(readlink -e "${BASH_SOURCE[0]}")")" && pwd)"
-. "${script_dir}/install-parsing.sh"
+. "${script_dir}/argparse/install.sh"
 
-sudo -n whoami > /dev/null 2>&1 || {
-    echo "ERROR: You must be root to run this script!"
+
+test "$(whoami)" == "root" || sudo -n whoami > /dev/null 2>&1 || {
+    echo "ERROR: You must be root to install mambaforge!"
     exit 1
 }
 
