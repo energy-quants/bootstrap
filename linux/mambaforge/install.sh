@@ -13,6 +13,10 @@ test "$(whoami)" == "root" || sudo -n whoami > /dev/null 2>&1 || {
 
 set -x
 
+apt-get update
+apt-get install -y ca-certificates curl
+
+
 # download mambaforge if no installer file was specified
 # shellcheck disable=SC2154
 if test -z "${_arg_filepath}"; then
