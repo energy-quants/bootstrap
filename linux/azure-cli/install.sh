@@ -7,7 +7,7 @@ script_dir="$(cd "$(dirname "$(readlink -e "${BASH_SOURCE[0]}")")" && pwd)"
 
 
 test "$(whoami)" == "root" || sudo -n whoami > /dev/null 2>&1 || {
-    echo "ERROR: You must be root to install mambaforge!"
+    echo "ERROR: You must be root to install the Azure CLI!"
     exit 1
 }
 
@@ -21,19 +21,21 @@ curl -sL https://packages.microsoft.com/keys/microsoft.asc |
     gpg --dearmor |
     tee /etc/apt/trusted.gpg.d/microsoft.gpg > /dev/null
 
-# Add MSSQL source
-curl -sL https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/prod.list > /etc/apt/sources.list.d/mssql-release.list
+echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main" |
+    tee /etc/apt/sources.list.d/azure-cli.list
 
 apt-get update
 
 if [ "${_arg_list_versions}" == "on" ]; then
     # List available versions and exit
-    apt list -a msodbcsql18
+    apt list -a azure-cli
     exit $?
 fi
 
 if [ "${_arg_version}" == "latest" ]; then
-    ACCEPT_EULA=Y apt-get install -y msodbcsql18
+    apt-get install -y azure-cli
 else
-    ACCEPT_EULA=Y apt-get install -y msodbcsql18="${_arg_version}"
+    apt-get install -y azure-cli="${_arg_version}"
 fi
+
+az --version
