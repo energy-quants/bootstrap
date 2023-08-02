@@ -58,7 +58,7 @@ mkdir -Force C:/conda/pkgs
 
 Write-Output "Downloading micromamba version $version"
 if ($version -eq "latest") {
-    $url = "https://api.anaconda.org/download/conda-forge/micromamba/latest"
+    $url = "https://micro.mamba.pm/api/micromamba/win-64/latest"
 } else {
     $url = "https://api.anaconda.org/download/conda-forge/micromamba/${version}/win-64/micromamba-${version}-0.tar.bz2"
 }
@@ -97,22 +97,14 @@ Set-Alias -Name mamba -Value micromamba
 #region mamba initialize
 # !! Contents within this block are managed by 'mamba shell init' !!
 $env:MAMBA_EXE = "${env:MAMBA_ROOT_PREFIX}/bin/micromamba.exe"
-# $script = (& $env:MAMBA_EXE 'shell' 'hook' -s 'powershell' -p $env:MAMBA_ROOT_PREFIX) | Out-String
-# Invoke-Expression $script
-# Hack to work around bug
-# https://github.com/mamba-org/mamba/issues/2157#issuecomment-1456257102
-Import-Module "${env:MAMBA_ROOT_PREFIX}/bin/Mamba.psm1"
+$script = (& $env:MAMBA_EXE 'shell' 'hook' -s 'powershell' -p $env:MAMBA_ROOT_PREFIX) | Out-String
+Invoke-Expression $script
 #endregion
 
 if (Test-Path 'env:MAMBA_DEFAULT_ENV') {
     micromamba activate $env:MAMBA_DEFAULT_ENV
 }
 '@ >> $PROFILE.AllUsersAllHosts
-
-$script_path = Split-Path $MyInvocation.MyCommand.Path -Parent
-$filepath = "${script_path}/Mamba.psm1"
-Copy-Item $filepath "${env:MAMBA_ROOT_PREFIX}/bin/Mamba.psm1" -Force
-
 
 Write-Output @'
 update_dependencies: false
@@ -127,4 +119,3 @@ pkgs_dirs:
 '@ > "${mamba_prefix}/.mambarc"
 
 micromamba info
-
