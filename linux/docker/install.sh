@@ -16,13 +16,16 @@ set -x
 apt-get update
 apt-get install -y ca-certificates curl apt-transport-https gnupg lsb-release
 
+distribution="$(lsb_release -is)"
+codename="$(lsb_release -cs)"
+
 # Add Docker's GPG key
 mkdir -p /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+curl -fsSL https://download.docker.com/linux/${distribution@L}/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 
 echo \
-    "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-    $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+    "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/${distribution@L} \
+    ${codename} stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 apt-get update
 
@@ -38,4 +41,4 @@ else
     apt-get install -y docker-ce="${_arg_version}" docker-ce-cli="${_arg_version}" containerd.io docker-compose-plugin
 fi
 
-docker version
+docker --version
