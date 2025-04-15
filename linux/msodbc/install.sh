@@ -30,7 +30,10 @@ curl -fsSL https://packages.microsoft.com/keys/microsoft.asc |
 # Add MSSQL source
 distribution="$(lsb_release -is)"
 release="$(lsb_release -rs)"
-curl -fsSL https://packages.microsoft.com/config/${distribution@L}/${release}/prod.list > /etc/apt/sources.list.d/microsoft-prod.list
+codename="$(lsb_release -cs)"
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft-prod.gpg] \
+https://packages.microsoft.com/${distribution@L}/${release}/prod ${codename} main" \
+| tee /etc/apt/sources.list.d/microsoft-prod.list > /dev/null
 
 apt-get update
 
